@@ -2,7 +2,15 @@
 export default {
   content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      container: {
+        center: true,
+        padding: "2rem",
+      },
+      fontFamily: {
+        "app-fm-roboto": ["'Roboto', sans-serif", "system-ui"],
+      },
+    },
   },
   plugins: [],
 };
