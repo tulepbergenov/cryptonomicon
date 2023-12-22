@@ -4,7 +4,7 @@
   <main>
     <section>
       <header>
-        <h1>Cryptonomicon</h1>
+        <h1 class="text-3xl font-bold underline">Cryptonomicon</h1>
       </header>
     </section>
   </main>
