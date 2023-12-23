@@ -1,9 +1,22 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { windowDisableScrolling, windowEnableScrolling } from "@/shared/utils";
+import { Ref, onMounted, ref } from "vue";
+import { Field, Form, ErrorMessage } from "vee-validate";
+import {
+  windowDisableScrolling,
+  windowEnableScrolling,
+  findTicker,
+} from "@/shared/utils";
 import AppPreloader from "@/shared/ui-kit/AppPreloader.vue";
+import VDivider from "@/shared/ui-kit/VDivider.vue";
+import { PlusCircleIcon, TrashIcon } from "@heroicons/vue/24/outline";
+import { XCircleIcon } from "@heroicons/vue/24/solid";
 
 const isLoading = ref(false);
+const formCreateTickerNewTicker = ref("");
+const coins = ref(["Btc", "Doge", "Bch", "Chd"]);
+const tickers = ref(["VUE", "REACT"]);
+const selectedTicker: Ref<string | null> = ref(tickers.value[0]);
+const tickerExistsErrorShow = ref(false);
 
 onMounted(() => {
   isLoading.value = true;
@@ -14,245 +27,238 @@ onMounted(() => {
     windowEnableScrolling();
   }, 1500);
 });
+
+const createTicker = (name?: string) => {
+  if (name) {
+    const tickerExists = findTicker(name, tickers.value);
+
+    if (!tickerExists) {
+      tickers.value.push(name);
+      resetTickerForm();
+    }
+  }
+
+  if (!formCreateTickerNewTicker.value.trim().length) {
+    formCreateTickerNewTicker.value = "";
+
+    return;
+  }
+
+  const tickerExists = findTicker(
+    formCreateTickerNewTicker.value,
+    tickers.value,
+  );
+
+  if (!tickerExists) {
+    tickers.value.push(formCreateTickerNewTicker.value);
+    resetTickerForm();
+  }
+};
+
+const isRequired = (value: string) => {
+  if (value && value.trim()) {
+    return true;
+  }
+  return "Такой тикер уже добавлен";
+};
+
+const closeSelectedTickerChart = () => {
+  selectedTicker.value = null;
+};
+
+const selectTicker = (name: string) => {
+  selectedTicker.value = name;
+};
+
+const deleteTicker = (name: string) => {
+  tickers.value = tickers.value.filter((ticker) => {
+    if (name === selectedTicker.value) {
+      selectedTicker.value = null;
+    }
+
+    if (ticker !== name) {
+      return ticker;
+    }
+  });
+};
+
+const resetTickerForm = () => {
+  formCreateTickerNewTicker.value = "";
+};
 </script>
 
 <template>
   <main class="flex-auto pb-32 pt-10">
     <AppPreloader :is-loading="isLoading" />
+    <section class="sr-only">
+      <header>
+        <h1>Cryptonomicon</h1>
+      </header>
+    </section>
     <section>
       <div class="container">
         <div>
-          <div class="max-w-sm">
-            <label for="wallet" class="block text-sm font-medium text-gray-700"
-              >Тикер</label
-            >
-            <div class="relative mt-1 rounded-md shadow-md">
-              <input
-                type="text"
-                name="wallet"
-                id="wallet"
-                class="block w-full rounded-md border-gray-300 pr-10 text-gray-900 focus:border-gray-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
-                placeholder="Например DOGE"
-              />
-            </div>
-            <div class="flex flex-wrap rounded-md bg-white p-1 shadow-md">
-              <span
-                class="m-1 inline-flex cursor-pointer items-center rounded-md bg-gray-300 px-2 text-xs font-medium text-gray-800"
+          <Form :on-submit="() => createTicker()" class="max-w-sm">
+            <fieldset>
+              <legend>
+                <label
+                  for="coin"
+                  class="block text-sm font-medium text-gray-700"
+                  >Тикер</label
+                >
+              </legend>
+              <div class="relative mt-1 rounded-md shadow-md">
+                <Field
+                  :rules="isRequired"
+                  v-model="formCreateTickerNewTicker"
+                  type="text"
+                  name="coin"
+                  id="coin"
+                  class="block w-full rounded-md border-gray-300 pr-10 text-gray-900 focus:border-gray-300 focus:ring-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                  placeholder="Например DOGE"
+                />
+              </div>
+              <ul
+                class="flex flex-wrap gap-1.5 rounded-md bg-white px-3 py-2 shadow-md"
               >
-                BTC
-              </span>
-              <span
-                class="m-1 inline-flex cursor-pointer items-center rounded-md bg-gray-300 px-2 text-xs font-medium text-gray-800"
+                <li v-for="coin in coins" :key="coin" class="flex">
+                  <button
+                    @click="() => createTicker(coin)"
+                    type="button"
+                    class="inline-block items-center rounded-md bg-gray-200 px-2 py-0.5 text-xs uppercase text-gray-800 transition-colors duration-150 ease-in-out hover:bg-gray-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                  >
+                    {{ coin }}
+                  </button>
+                </li>
+              </ul>
+              <Transition name="ticker-error">
+                <div
+                  v-if="tickerExistsErrorShow"
+                  class="mt-2 text-sm text-red-600"
+                >
+                  <span>Такой тикер уже добавлен</span>
+                </div>
+              </Transition>
+              <ErrorMessage name="coin" />
+              <button
+                type="submit"
+                class="mt-3 flex items-center gap-1 rounded-full bg-gray-600 px-4 py-2 text-sm leading-4 text-white shadow-sm transition-[background,box-shadow] duration-300 hover:bg-gray-700 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
               >
-                DOGE
-              </span>
-              <span
-                class="m-1 inline-flex cursor-pointer items-center rounded-md bg-gray-300 px-2 text-xs font-medium text-gray-800"
-              >
-                BCH
-              </span>
-              <span
-                class="m-1 inline-flex cursor-pointer items-center rounded-md bg-gray-300 px-2 text-xs font-medium text-gray-800"
-              >
-                CHD
-              </span>
-            </div>
-            <div class="text-sm text-red-600">Такой тикер уже добавлен</div>
-          </div>
-          <button
-            type="button"
-            class="my-4 inline-flex items-center rounded-full border border-transparent bg-gray-600 px-4 py-2 text-sm font-medium leading-4 text-white shadow-sm transition-colors duration-300 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-          >
-            <!-- Heroicon name: solid/mail -->
-            <svg
-              class="-ml-0.5 mr-2 h-6 w-6"
-              xmlns="http://www.w3.org/2000/svg"
-              width="30"
-              height="30"
-              viewBox="0 0 24 24"
-              fill="#ffffff"
-            >
-              <path
-                d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
-              ></path>
-            </svg>
-            Добавить
-          </button>
+                <PlusCircleIcon class="h-6 w-6" />
+                <span>Добавить</span>
+              </button>
+            </fieldset>
+          </Form>
         </div>
       </div>
     </section>
     <section>
       <div class="container">
         <div>
-          <hr class="my-4 w-full border-t border-gray-600" />
-          <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
-            <div
-              class="cursor-pointer overflow-hidden rounded-lg border-solid border-purple-800 bg-white shadow"
+          <VDivider />
+          <div>
+            <TransitionGroup
+              name="tickers"
+              tag="ul"
+              class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"
             >
-              <div class="px-4 py-5 text-center sm:p-6">
-                <dt class="truncate text-sm font-medium text-gray-500">
-                  WTF - USD
-                </dt>
-                <dd class="mt-1 text-3xl font-semibold text-gray-900">1.11</dd>
-              </div>
-              <div class="w-full border-t border-gray-200"></div>
-              <button
-                class="text-md flex w-full items-center justify-center bg-gray-100 px-4 py-4 font-medium text-gray-500 transition-all hover:bg-gray-200 hover:text-gray-600 hover:opacity-20 focus:outline-none sm:px-6"
-              >
-                <svg
-                  class="h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="#718096"
-                  aria-hidden="true"
+              <li v-for="ticker in tickers" :key="ticker">
+                <article
+                  class="cursor-pointer drop-shadow-sm transition-[filter] duration-150 ease-in-out hover:drop-shadow-md"
                 >
-                  <path
-                    fill-rule="evenodd"
-                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                    clip-rule="evenodd"
-                  ></path></svg
-                >Удалить
-              </button>
-            </div>
-            <div
-              class="cursor-pointer overflow-hidden rounded-lg border-4 border-solid border-purple-800 bg-white shadow"
-            >
-              <div class="px-4 py-5 text-center sm:p-6">
-                <dt class="truncate text-sm font-medium text-gray-500">
-                  VUE - RUB
-                </dt>
-                <dd class="mt-1 text-3xl font-semibold text-gray-900">
-                  80000.00
-                </dd>
-              </div>
-              <div class="w-full border-t border-gray-200"></div>
-              <button
-                class="text-md flex w-full items-center justify-center bg-gray-100 px-4 py-4 font-medium text-gray-500 transition-all hover:bg-gray-200 hover:text-gray-600 hover:opacity-20 focus:outline-none sm:px-6"
-              >
-                <svg
-                  class="h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="#718096"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                    clip-rule="evenodd"
-                  ></path></svg
-                >Удалить
-              </button>
-            </div>
-            <div
-              class="cursor-pointer overflow-hidden rounded-lg border-solid border-purple-800 bg-white shadow"
-            >
-              <div class="px-4 py-5 text-center sm:p-6">
-                <dt class="truncate text-sm font-medium text-gray-500">
-                  BTC - USD
-                </dt>
-                <dd class="mt-1 text-3xl font-semibold text-gray-900">
-                  99999.99
-                </dd>
-              </div>
-              <div class="w-full border-t border-gray-200"></div>
-              <button
-                class="text-md flex w-full items-center justify-center bg-gray-100 px-4 py-4 font-medium text-gray-500 transition-all hover:bg-gray-200 hover:text-gray-600 hover:opacity-20 focus:outline-none sm:px-6"
-              >
-                <svg
-                  class="h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="#718096"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                    clip-rule="evenodd"
-                  ></path></svg
-                >Удалить
-              </button>
-            </div>
-            <div
-              class="cursor-pointer overflow-hidden rounded-lg border-solid border-purple-800 bg-white shadow"
-            >
-              <div class="px-4 py-5 text-center sm:p-6">
-                <dt class="truncate text-sm font-medium text-gray-500">
-                  DOGE - USD
-                </dt>
-                <dd class="mt-1 text-3xl font-semibold text-gray-900">
-                  0.0014
-                </dd>
-              </div>
-              <div class="w-full border-t border-gray-200"></div>
-              <button
-                class="text-md flex w-full items-center justify-center bg-gray-100 px-4 py-4 font-medium text-gray-500 transition-all hover:bg-gray-200 hover:text-gray-600 hover:opacity-20 focus:outline-none sm:px-6"
-              >
-                <svg
-                  class="h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="#718096"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                    clip-rule="evenodd"
-                  ></path></svg
-                >Удалить
-              </button>
-            </div>
-          </dl>
-        </div>
-      </div>
-    </section>
-    <section>
-      <div class="container">
-        <div>
-          <hr class="my-4 w-full border-t border-gray-600" />
-          <div class="relative">
-            <h3 class="my-8 text-lg font-medium leading-6 text-gray-900">
-              VUE - USD
-            </h3>
-            <div class="flex h-64 items-end border-b border-l border-gray-600">
-              <div class="h-24 w-10 border bg-purple-800"></div>
-              <div class="h-32 w-10 border bg-purple-800"></div>
-              <div class="h-48 w-10 border bg-purple-800"></div>
-              <div class="h-16 w-10 border bg-purple-800"></div>
-            </div>
-            <button
-              type="button"
-              title="Закрыть график VUE"
-              aria-label="Закрыть график VUE"
-              class="absolute right-0 top-0"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:svgjs="http://svgjs.com/svgjs"
-                version="1.1"
-                width="30"
-                height="30"
-                x="0"
-                y="0"
-                viewBox="0 0 511.76 511.76"
-                style="enable-background: new 0 0 512 512"
-                xml:space="preserve"
-              >
-                <g>
-                  <path
-                    d="M436.896,74.869c-99.84-99.819-262.208-99.819-362.048,0c-99.797,99.819-99.797,262.229,0,362.048    c49.92,49.899,115.477,74.837,181.035,74.837s131.093-24.939,181.013-74.837C536.715,337.099,536.715,174.688,436.896,74.869z     M361.461,331.317c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-75.413-75.435l-75.392,75.413c-4.181,4.16-9.643,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    c-8.341-8.341-8.341-21.845,0-30.165l75.392-75.413l-75.413-75.413c-8.341-8.341-8.341-21.845,0-30.165    c8.32-8.341,21.824-8.341,30.165,0l75.413,75.413l75.413-75.413c8.341-8.341,21.824-8.341,30.165,0    c8.341,8.32,8.341,21.824,0,30.165l-75.413,75.413L361.461,331.317z"
-                    fill="#718096"
-                    data-original="#000000"
-                  ></path>
-                </g>
-              </svg>
-            </button>
+                  <div
+                    @click="() => selectTicker(ticker)"
+                    tabindex="0"
+                    aria-label="Показать график VUE"
+                    title="Показать график VUE"
+                    class="flex flex-col rounded-t-lg border border-gray-200 bg-white px-4 py-5 text-center focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                  >
+                    <span class="truncate text-sm uppercase text-gray-500">
+                      {{ ticker }} - USD
+                    </span>
+                    <span class="mt-1 text-3xl font-bold text-gray-900">
+                      1.11
+                    </span>
+                  </div>
+                  <button
+                    @click.prevent="() => deleteTicker(ticker)"
+                    type="button"
+                    class="text-md flex w-full items-center justify-center gap-1 rounded-b-lg border-x border-b border-gray-200 bg-gray-100 px-4 py-4 text-gray-500 transition-colors duration-150 ease-in-out hover:bg-gray-200 hover:text-gray-600 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                  >
+                    <TrashIcon class="h-5 w-5" />
+                    <span>Удалить</span>
+                  </button>
+                </article>
+              </li>
+            </TransitionGroup>
           </div>
         </div>
       </div>
     </section>
+    <Transition name="selectedTickerChart">
+      <section v-if="selectedTicker">
+        <div class="container">
+          <div>
+            <VDivider />
+            <div>
+              <div class="flex items-center justify-between">
+                <h2 class="text-lg font-bold uppercase leading-6 text-gray-900">
+                  {{ selectedTicker }} - USD
+                </h2>
+                <button
+                  @click="closeSelectedTickerChart"
+                  type="button"
+                  title="Закрыть график VUE"
+                  aria-label="Закрыть график VUE"
+                  class="text-gray-500 transition-colors duration-150 ease-in-out hover:text-gray-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                >
+                  <XCircleIcon class="h-9 w-9" />
+                </button>
+              </div>
+              <ul
+                class="mt-6 flex h-64 items-end gap-1 border-b border-l border-gray-400 p-1"
+              >
+                <li class="h-24 w-10 border bg-purple-800"></li>
+                <li class="h-32 w-10 border bg-purple-800"></li>
+                <li class="h-48 w-10 border bg-purple-800"></li>
+                <li class="h-16 w-10 border bg-purple-800"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </Transition>
   </main>
 </template>
+
+<style scoped>
+.selectedTickerChart-enter-active,
+.selectedTickerChart-leave-active {
+  transition: opacity 0.2s ease-in-out;
+}
+
+.selectedTickerChart-enter-from,
+.selectedTickerChart-leave-to {
+  opacity: 0;
+}
+
+.tickers-enter-active,
+.tickers-leave-active {
+  transition: all 0.2s ease-in-out;
+}
+
+.tickers-enter-from,
+.tickers-leave-to {
+  opacity: 0;
+}
+
+.ticker-error-enter-active,
+.ticker-error-leave-active {
+  transition: all 0.2s ease-in-out;
+}
+
+.ticker-error-enter-from,
+.ticker-error-leave-to {
+  opacity: 0;
+}
+</style>

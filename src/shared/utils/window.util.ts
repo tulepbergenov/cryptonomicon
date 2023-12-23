@@ -3,6 +3,7 @@ export const windowDisableScrolling = () => {
 
   if (body) {
     body.style.overflow = "hidden";
+    body.style.paddingRight = "8px";
   }
 };
 
@@ -11,5 +12,6 @@ export const windowEnableScrolling = () => {
 
   if (body) {
     body.style.overflow = "visible";
+    body.style.paddingRight = "0";
   }
 };

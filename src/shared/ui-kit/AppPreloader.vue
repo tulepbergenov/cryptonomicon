@@ -13,7 +13,7 @@ const props = defineProps<Props>();
       class="w-100 h-100 fixed inset-0 z-50 flex items-center justify-center bg-purple-800 opacity-80"
     >
       <svg
-        class="-ml-1 mr-3 h-12 w-12 animate-spin text-white"
+        class="h-12 w-12 animate-spin text-white"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
