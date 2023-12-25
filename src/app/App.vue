@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { Ref, onMounted, ref } from "vue";
-import { Field, Form, ErrorMessage } from "vee-validate";
 import {
   windowDisableScrolling,
   windowEnableScrolling,
   findTicker,
 } from "@/shared/utils";
-import AppPreloader from "@/shared/ui-kit/AppPreloader.vue";
+import VAppPreloader from "@/shared/ui-kit/VAppPreloader.vue";
 import VDivider from "@/shared/ui-kit/VDivider.vue";
 import { PlusCircleIcon, TrashIcon } from "@heroicons/vue/24/outline";
 import { XCircleIcon } from "@heroicons/vue/24/solid";
@@ -55,13 +54,6 @@ const createTicker = (name?: string) => {
   }
 };
 
-const isRequired = (value: string) => {
-  if (value && value.trim()) {
-    return true;
-  }
-  return "Такой тикер уже добавлен";
-};
-
 const closeSelectedTickerChart = () => {
   selectedTicker.value = null;
 };
@@ -89,7 +81,7 @@ const resetTickerForm = () => {
 
 <template>
   <main class="flex-auto pb-32 pt-10">
-    <AppPreloader :is-loading="isLoading" />
+    <VAppPreloader :is-loading="isLoading" />
     <section class="sr-only">
       <header>
         <h1>Cryptonomicon</h1>
@@ -98,7 +90,7 @@ const resetTickerForm = () => {
     <section>
       <div class="container">
         <div>
-          <Form :on-submit="() => createTicker()" class="max-w-sm">
+          <form @submit.prevent="() => createTicker()" class="max-w-sm">
             <fieldset>
               <legend>
                 <label
@@ -108,8 +100,7 @@ const resetTickerForm = () => {
                 >
               </legend>
               <div class="relative mt-1 rounded-md shadow-md">
-                <Field
-                  :rules="isRequired"
+                <input
                   v-model="formCreateTickerNewTicker"
                   type="text"
                   name="coin"
@@ -139,7 +130,6 @@ const resetTickerForm = () => {
                   <span>Такой тикер уже добавлен</span>
                 </div>
               </Transition>
-              <ErrorMessage name="coin" />
               <button
                 type="submit"
                 class="mt-3 flex items-center gap-1 rounded-full bg-gray-600 px-4 py-2 text-sm leading-4 text-white shadow-sm transition-[background,box-shadow] duration-300 hover:bg-gray-700 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
@@ -148,7 +138,7 @@ const resetTickerForm = () => {
                 <span>Добавить</span>
               </button>
             </fieldset>
-          </Form>
+          </form>
         </div>
       </div>
     </section>
