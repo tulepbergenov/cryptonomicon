@@ -9,10 +9,11 @@ import VAppPreloader from "@/shared/ui-kit/VAppPreloader.vue";
 import VDivider from "@/shared/ui-kit/VDivider.vue";
 import { PlusCircleIcon, TrashIcon } from "@heroicons/vue/24/outline";
 import { XCircleIcon } from "@heroicons/vue/24/solid";
+import { getCoinList } from "@/shared/api";
 
 const isLoading = ref(false);
 const formCreateTickerNewTicker = ref("");
-const coins = ref(["Btc", "Doge", "Bch", "Chd"]);
+const coins: Ref<string[]> = ref([]);
 const tickers = ref(["VUE", "REACT"]);
 const selectedTicker: Ref<string | null> = ref(tickers.value[0]);
 const tickerExistsErrorShow = ref(false);
@@ -21,10 +22,17 @@ onMounted(() => {
   isLoading.value = true;
   windowDisableScrolling();
 
-  setTimeout(() => {
-    isLoading.value = false;
-    windowEnableScrolling();
-  }, 1500);
+  getCoinList()
+    .then((res) => {
+      isLoading.value = false;
+      windowEnableScrolling();
+      coins.value = res;
+    })
+    .catch((err) => {
+      isLoading.value = false;
+      windowEnableScrolling();
+      console.log(err);
+    });
 });
 
 const createTicker = (name?: string) => {
@@ -109,19 +117,26 @@ const resetTickerForm = () => {
                   placeholder="Например DOGE"
                 />
               </div>
-              <ul
-                class="flex flex-wrap gap-1.5 rounded-md bg-white px-3 py-2 shadow-md"
-              >
-                <li v-for="coin in coins" :key="coin" class="flex">
-                  <button
-                    @click="() => createTicker(coin)"
-                    type="button"
-                    class="inline-block items-center rounded-md bg-gray-200 px-2 py-0.5 text-xs uppercase text-gray-800 transition-colors duration-150 ease-in-out hover:bg-gray-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+              <Transition name="coins">
+                <ul
+                  v-if="coins.length"
+                  class="flex flex-wrap gap-1.5 rounded-md bg-white px-3 py-2 shadow-md"
+                >
+                  <li
+                    v-for="coin in coins.slice(0, 4)"
+                    :key="coin"
+                    class="flex"
                   >
-                    {{ coin }}
-                  </button>
-                </li>
-              </ul>
+                    <button
+                      @click="() => createTicker(coin)"
+                      type="button"
+                      class="inline-block items-center rounded-md bg-gray-200 px-2 py-0.5 text-xs uppercase text-gray-800 transition-colors duration-150 ease-in-out hover:bg-gray-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                    >
+                      {{ coin }}
+                    </button>
+                  </li>
+                </ul></Transition
+              >
               <Transition name="ticker-error">
                 <div
                   v-if="tickerExistsErrorShow"
@@ -253,6 +268,16 @@ const resetTickerForm = () => {
 
 .ticker-error-enter-from,
 .ticker-error-leave-to {
+  opacity: 0;
+}
+
+.coins-enter-active,
+.coins-leave-active {
+  transition: all 0.2s ease-in-out;
+}
+
+.coins-enter-from,
+.coins-leave-to {
   opacity: 0;
 }
 </style>
