@@ -90,7 +90,7 @@ const resetTickerForm = () => {
     <section>
       <div class="container">
         <div>
-          <form @submit.prevent="() => createTicker()" class="max-w-sm">
+          <form @submit.prevent="() => createTicker()" class="md:max-w-sm">
             <fieldset>
               <legend>
                 <label
@@ -154,7 +154,11 @@ const resetTickerForm = () => {
             >
               <li v-for="ticker in tickers" :key="ticker">
                 <article
-                  class="cursor-pointer drop-shadow-sm transition-[filter] duration-150 ease-in-out hover:drop-shadow-md"
+                  class="relative cursor-pointer drop-shadow-sm transition-[filter] duration-150 ease-in-out before:absolute before:left-2/4 before:top-2/4 before:-z-[1] before:h-[calc(100%+8px)] before:w-[calc(100%+8px)] before:-translate-x-2/4 before:-translate-y-2/4 before:rounded-xl before:border-2 before:transition-colors before:duration-150 before:ease-in-out before:content-[''] hover:drop-shadow-md"
+                  :class="{
+                    'before:border-purple-700': ticker === selectedTicker,
+                    'before:border-transparent': ticker !== selectedTicker,
+                  }"
                 >
                   <div
                     @click="() => selectTicker(ticker)"
