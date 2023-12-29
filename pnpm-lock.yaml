@@ -14,6 +14,9 @@ dependencies:
   axios:
     specifier: ^1.6.2
     version: 1.6.2
+  cryptonomicon:
+    specifier: 'link:'
+    version: 'link:'
   lodash:
     specifier: ^4.17.21
     version: 4.17.21
@@ -23,6 +26,9 @@ dependencies:
   vue:
     specifier: ^3.3.11
     version: 3.3.13(typescript@5.3.3)
+  vue3-toastify:
+    specifier: ^0.2.1
+    version: 0.2.1(vue@3.3.13)
 
 devDependencies:
   '@tailwindcss/forms':
@@ -3458,6 +3464,18 @@ packages:
       semver: 7.5.4
       typescript: 5.3.3
     dev: true
+
+  /vue3-toastify@0.2.1(vue@3.3.13):
+    resolution: {integrity: sha512-u4i5LCu1q5qs4L4Kbjb4u8NipCS8ox1fCHQ6XFS62676xnA6Q/AJRpZEkAurTMp723LeH6eQX6k9+24bKf1T4Q==}
+    engines: {node: '>=16', npm: '>=7'}
+    peerDependencies:
+      vue: '>=3.2.0'
+    peerDependenciesMeta:
+      vue:
+        optional: true
+    dependencies:
+      vue: 3.3.13(typescript@5.3.3)
+    dev: false
 
   /vue@3.3.13(typescript@5.3.3):
     resolution: {integrity: sha512-LDnUpQvDgsfc0u/YgtAgTMXJlJQqjkxW1PVcOnJA5cshPleULDjHi7U45pl2VJYazSSvLH8UKcid/kzH8I0a0Q==}

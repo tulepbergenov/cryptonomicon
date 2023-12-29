@@ -12,9 +12,11 @@
     "@fontsource/roboto": "^5.0.8",
     "@heroicons/vue": "^2.1.1",
     "axios": "^1.6.2",
+    "cryptonomicon": "link:",
     "lodash": "^4.17.21",
     "vee-validate": "^4.12.3",
-    "vue": "^3.3.11"
+    "vue": "^3.3.11",
+    "vue3-toastify": "^0.2.1"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",

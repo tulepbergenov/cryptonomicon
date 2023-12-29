@@ -25,10 +25,9 @@ onMounted(() => {
       windowEnableScrolling();
       coins.value = res;
     })
-    .catch((err) => {
+    .catch(() => {
       isLoading.value = false;
       windowEnableScrolling();
-      console.log(err);
     });
 });
 
