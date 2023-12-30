@@ -3,10 +3,10 @@ import VTicker from "@/components/VTicker.vue";
 import VDivider from "@/components/VDivider.vue";
 
 interface Props {
-  tickers: string;
-  selectedTicker: string;
-  selectTicker: (name: string) => void;
-  deleteTicker: (name: string) => void;
+  tickers: string[];
+  selectedTicker: string | null;
+  onSelectTicker: (name: string) => void;
+  onDeleteTicker: (name: string) => void;
 }
 
 const props = defineProps<Props>();
@@ -27,9 +27,9 @@ const props = defineProps<Props>();
               v-for="ticker in props.tickers"
               :key="ticker"
               :ticker="ticker"
-              :selected-ticker="selectedTicker"
-              :select-ticker="selectTicker"
-              :delete-ticker="deleteTicker"
+              :selected-ticker="props.selectedTicker"
+              :select-ticker="props.onSelectTicker"
+              :delete-ticker="props.onDeleteTicker"
             />
           </TransitionGroup>
         </div>

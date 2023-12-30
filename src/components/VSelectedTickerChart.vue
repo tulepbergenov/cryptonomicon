@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { XCircleIcon } from "@heroicons/vue/24/solid";
+import VDivider from "@/components/VDivider.vue";
 
 interface Props {
   selectedTicker: string | null;
-  closeSelectedTickerChart: () => void;
+  onCloseSelectedTickerChart: () => void;
 }
 
 const props = defineProps<Props>();
@@ -21,7 +22,7 @@ const props = defineProps<Props>();
                 {{ props.selectedTicker }} - USD
               </h2>
               <button
-                @click="props.closeSelectedTickerChart"
+                @click="props.onCloseSelectedTickerChart"
                 type="button"
                 :title="`Закрыть график ${props.selectedTicker}`"
                 :aria-label="`Закрыть график ${props.selectedTicker}`"

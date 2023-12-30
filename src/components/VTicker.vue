@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { TrashIcon } from "@heroicons/vue/24/outline";
+
 interface Props {
   ticker: string;
-  selectedTicker: string;
+  selectedTicker: string | null;
   selectTicker: (name: string) => void;
   deleteTicker: (name: string) => void;
 }

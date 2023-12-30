@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { PlusCircleIcon } from "@heroicons/vue/24/outline";
+import VCoins from "@/components/VCoins.vue";
 
 interface Props {
-  coins: string;
-  addTicker: (string?: string) => void;
-  tickerExistsErrorShow: boolean;
+  coins: string[];
+  onAddTicker: (string?: string) => void;
+  isTickerExistsErrorShow: boolean;
 }
 
 const props = defineProps<Props>();
@@ -16,7 +18,7 @@ const ticker = ref("");
   <section>
     <div class="container">
       <div>
-        <form @submit.prevent="() => props.addTicker()" class="md:max-w-sm">
+        <form @submit.prevent="() => props.onAddTicker()" class="md:max-w-sm">
           <fieldset>
             <legend>
               <label for="coin" class="block text-sm font-medium text-gray-700"
@@ -33,42 +35,10 @@ const ticker = ref("");
                 placeholder="Например DOGE"
               />
             </div>
-            <ul
-              class="flex flex-wrap gap-1.5 rounded-md bg-white px-3 py-2 shadow-md"
-            >
-              <li
-                v-if="!props.coins.length"
-                class="inline-block h-5 w-10 animate-pulse rounded-md bg-gray-200"
-              ></li>
-              <li
-                v-if="!props.coins.length"
-                class="inline-block h-5 w-8 animate-pulse rounded-md bg-gray-200"
-              ></li>
-              <li
-                v-if="!props.coins.length"
-                class="inline-block h-5 w-12 animate-pulse rounded-md bg-gray-200"
-              ></li>
-              <li
-                v-if="!props.coins.length"
-                class="inline-block h-5 w-7 animate-pulse rounded-md bg-gray-200"
-              ></li>
-              <li
-                v-for="coin in props.coins.slice(0, 4)"
-                :key="coin"
-                class="flex"
-              >
-                <button
-                  @click="() => addTicker(coin)"
-                  type="button"
-                  class="inline-block items-center rounded-md bg-gray-200 px-2 py-0.5 text-xs uppercase text-gray-800 transition-colors duration-150 ease-in-out hover:bg-gray-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
-                >
-                  {{ coin }}
-                </button>
-              </li>
-            </ul>
+            <VCoins :coins="props.coins" :on-add-ticker="props.onAddTicker" />
             <Transition name="ticker-error">
               <div
-                v-if="props.tickerExistsErrorShow"
+                v-if="props.isTickerExistsErrorShow"
                 class="mt-2 text-sm text-red-600"
               >
                 <span>Такой тикер уже добавлен</span>
