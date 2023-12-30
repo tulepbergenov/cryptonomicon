@@ -28,8 +28,8 @@ const props = defineProps<Props>();
               :key="ticker"
               :ticker="ticker"
               :selected-ticker="props.selectedTicker"
-              :select-ticker="props.onSelectTicker"
-              :delete-ticker="props.onDeleteTicker"
+              :on-select-ticker="props.onSelectTicker"
+              :on-delete-ticker="props.onDeleteTicker"
             />
           </TransitionGroup>
         </div>

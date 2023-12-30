@@ -26,7 +26,7 @@ const props = defineProps<Props>();
                 type="button"
                 :title="`Закрыть график ${props.selectedTicker}`"
                 :aria-label="`Закрыть график ${props.selectedTicker}`"
-                class="text-gray-500 transition-colors duration-150 ease-in-out hover:text-gray-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                class="text-gray-500 transition-colors duration-150 ease-in-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 active:text-gray-600 md:hover:text-gray-600"
               >
                 <XCircleIcon class="h-9 w-9" />
               </button>

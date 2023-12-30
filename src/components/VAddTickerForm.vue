@@ -46,7 +46,7 @@ const ticker = ref("");
             </Transition>
             <button
               type="submit"
-              class="mt-3 flex items-center gap-1 rounded-full bg-gray-600 px-4 py-2 text-sm leading-4 text-white shadow-sm transition-[background,box-shadow] duration-300 hover:bg-gray-700 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+              class="mt-3 flex items-center gap-1 rounded-full bg-gray-600 px-4 py-2 text-sm leading-4 text-white shadow-sm transition-[background,box-shadow] duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 active:bg-gray-700 md:hover:bg-gray-700 md:hover:shadow-md"
             >
               <PlusCircleIcon class="h-6 w-6" />
               <span>Добавить</span>
