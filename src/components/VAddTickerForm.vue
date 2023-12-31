@@ -5,20 +5,25 @@ import VCoins from "@/components/VCoins.vue";
 
 interface Props {
   coins: string[];
-  onAddTicker: (string?: string) => void;
+  onAddTicker: (string: string) => void;
   isTickerExistsErrorShow: boolean;
 }
 
 const props = defineProps<Props>();
 
 const ticker = ref("");
+
+const onSubmit = () => {
+  props.onAddTicker(ticker.value);
+  ticker.value = "";
+};
 </script>
 
 <template>
   <section>
     <div class="container">
       <div>
-        <form @submit.prevent="() => props.onAddTicker()" class="md:max-w-sm">
+        <form @submit.prevent="onSubmit" class="md:max-w-sm">
           <fieldset>
             <legend>
               <label for="coin" class="block text-sm font-medium text-gray-700"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 interface Props {
   coins: string[];
-  onAddTicker: (name?: string) => void;
+  onAddTicker: (name: string) => void;
 }
 
 const props = defineProps<Props>();

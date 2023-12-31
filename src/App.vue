@@ -13,7 +13,6 @@ import { getCoinList } from "@/api";
 import VHero from "@/components/VHero.vue";
 
 const isLoading = ref(false);
-const formCreateTickerNewTicker = ref("");
 const coins: Ref<string[]> = ref([]);
 const tickers = ref(["VUE", "REACT"]);
 const selectedTicker: Ref<string | null> = ref(tickers.value[0]);
@@ -35,30 +34,17 @@ onMounted(() => {
     });
 });
 
-const handleAddTicker = (name?: string) => {
+const handleAddTicker = (name: string) => {
   if (name) {
     const tickerExists = findTicker(name, tickers.value);
 
     if (!tickerExists) {
       tickers.value.push(name);
-      resetTickerForm();
+      isTickerExistsErrorShow.value = false;
+      return;
     }
-  }
 
-  if (!formCreateTickerNewTicker.value.trim().length) {
-    formCreateTickerNewTicker.value = "";
-
-    return;
-  }
-
-  const tickerExists = findTicker(
-    formCreateTickerNewTicker.value,
-    tickers.value,
-  );
-
-  if (!tickerExists) {
-    tickers.value.push(formCreateTickerNewTicker.value);
-    resetTickerForm();
+    isTickerExistsErrorShow.value = true;
   }
 };
 
@@ -80,10 +66,6 @@ const handleDeleteTicker = (name: string) => {
       return ticker;
     }
   });
-};
-
-const resetTickerForm = () => {
-  formCreateTickerNewTicker.value = "";
 };
 </script>
 
