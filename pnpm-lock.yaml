@@ -14,9 +14,6 @@ dependencies:
   axios:
     specifier: ^1.6.2
     version: 1.6.2
-  cryptonomicon:
-    specifier: 'link:'
-    version: 'link:'
   lodash:
     specifier: ^4.17.21
     version: 4.17.21
