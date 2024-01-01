@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import lodashValues from "lodash/values";
+import _values from "lodash/values";
 import { toast } from "vue3-toastify";
 // по приколу лодаш запихнул, я знаю про Object.values)))
 
@@ -15,7 +15,7 @@ export const getCoinList = async (): Promise<string[]> => {
       return [];
     }
 
-    const data: string[] = lodashValues(res.data.Data).map(
+    const data: string[] = _values(res.data.Data).map(
       (ticker) => ticker.Symbol,
     );
 
