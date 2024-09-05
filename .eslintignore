@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.cache/
+*.js.map
+*.css.map
+.eslintrc.js
+.eslintignore
+.editorconfig
+.vscode/
+.gitignore
+.git/
+*.log
+*.tmp
+__tests__/
