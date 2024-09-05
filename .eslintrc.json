@@ -2,8 +2,7 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "node": true,
-    "amd": true
+    "node": true
   },
   "extends": [
     "eslint:recommended",
@@ -21,22 +20,7 @@
     "vue",
     "prettier"
   ],
-  "overrides": [
-    {
-      "files": ["*.json"],
-      "parser": "json-eslint-parser",
-      "rules": {
-        "prettier/prettier": [
-          "error",
-          {
-            "parser": "json"
-          }
-        ]
-      }
-    }
-  ],
   "rules": {
-    "prettier/prettier": "error",
     "indent": [
       "error",
       2
