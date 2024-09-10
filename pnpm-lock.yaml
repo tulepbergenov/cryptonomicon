@@ -11,6 +11,9 @@ importers:
       '@fontsource/roboto':
         specifier: ^5.0.15
         version: 5.0.15
+      '@heroicons/vue':
+        specifier: ^2.1.5
+        version: 2.1.5(vue@3.5.1(typescript@5.5.4))
       vue:
         specifier: ^3.4.37
         version: 3.5.1(typescript@5.5.4)
@@ -321,6 +324,11 @@ packages:
 
   '@fontsource/roboto@5.0.15':
     resolution: {integrity: sha512-352XiID9jfwmYaHpdmS3ocGJi3PA+vOm4HzJIRfSyPEyLP6dZN8iiEKUbdAfB5YXQO3YxO2KZpR+R28q2zMiYw==}
+
+  '@heroicons/vue@2.1.5':
+    resolution: {integrity: sha512-IpqR72sFqFs55kyKfFS7tN+Ww6odFNeH/7UxycIOrlVYfj4WUGAdzQtLBnJspucSeqWFQsKM0g0YrgU655BEfA==}
+    peerDependencies:
+      vue: '>= 3'
 
   '@humanwhocodes/module-importer@1.0.1':
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
@@ -2065,6 +2073,10 @@ snapshots:
       levn: 0.4.1
 
   '@fontsource/roboto@5.0.15': {}
+
+  '@heroicons/vue@2.1.5(vue@3.5.1(typescript@5.5.4))':
+    dependencies:
+      vue: 3.5.1(typescript@5.5.4)
 
   '@humanwhocodes/module-importer@1.0.1': {}
 
