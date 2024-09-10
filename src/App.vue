@@ -8,6 +8,9 @@ import { XCircleIcon } from "@heroicons/vue/24/outline";
 
 <template>
   <main class="flex-auto mb-20">
+    <h1 class="sr-only">
+      Cryptonomicon tracks live currency and crypto rates 📈
+    </h1>
     <AppSpinner />
     <section class="mt-10">
       <div class="container">
@@ -106,7 +109,7 @@ import { XCircleIcon } from "@heroicons/vue/24/outline";
     <section>
       <div class="container">
         <div class="relative">
-          <h3 class="text-lg text-gray-900">VUE - USD</h3>
+          <span class="text-lg text-gray-900">VUE - USD</span>
           <div
             class="flex items-end border-gray-600 border-b border-l h-64 mt-8"
           >
