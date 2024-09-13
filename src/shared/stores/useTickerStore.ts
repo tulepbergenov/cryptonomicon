@@ -3,18 +3,7 @@ import { TickerType } from "../types";
 import { computed, ref } from "vue";
 
 export const useTickerStore = defineStore("tickerStoreId", () => {
-  const tickers = ref<TickerType[]>([
-    {
-      id: "1",
-      name: "AAPL",
-      price: 150.0,
-    },
-    {
-      id: "2",
-      name: "GOOGL",
-      price: 2000.0,
-    },
-  ]);
+  const tickers = ref<TickerType[]>([]);
 
   const selectedTicker = ref<TickerType | null>(null);
 
