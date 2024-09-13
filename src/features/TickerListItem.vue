@@ -13,13 +13,21 @@ const tickerStore = useTickerStore();
 const value = computed(() =>
   props.ticker.price === 0 ? "-" : props.ticker.price
 );
+
+const isSelected = computed(
+  () => tickerStore.selectedTicker?.id === props.ticker.id
+);
 </script>
 
 <template>
   <article
     @click="tickerStore.setSelectedTicker(props.ticker)"
     tabindex="0"
-    class="cursor-pointer drop-shadow-md [@media(hover:hover)]:hover:drop-shadow-lg transition-[filter] ease-in-out duration-300 relative before:content-[''] before:-z-[1] before:absolute before:-top-[6px] before:-left-[6px] before:size-[calc(100%+12px)] before:border-[2px] before:border-purple-800 before:rounded-xl"
+    :class="{
+      'before:opacity-100': isSelected,
+      'before:opacity-0': !isSelected,
+    }"
+    class="cursor-pointer drop-shadow-md [@media(hover:hover)]:hover:drop-shadow-lg transition-[filter] ease-in-out duration-300 relative before:content-[''] before:-z-[1] before:absolute before:-top-[6px] before:-left-[6px] before:size-[calc(100%+12px)] before:transition-opacity before:duration-300 before:ease-in-out before:border-[2px] before:border-purple-800 before:rounded-xl"
   >
     <div
       class="px-4 py-5 text-center flex flex-col uppercase rounded-t-lg bg-white"

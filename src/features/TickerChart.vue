@@ -8,7 +8,7 @@ const tickerStore = useTickerStore();
 <template>
   <div>
     <div class="flex items-center justify-between">
-      <span class="text-lg text-gray-900 font-bold">{{
+      <span class="text-lg text-gray-900 font-bold uppercase">{{
         tickerStore.selectedTicker?.name
       }}</span>
       <button
