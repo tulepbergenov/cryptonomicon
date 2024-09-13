@@ -12,6 +12,7 @@
   "dependencies": {
     "@fontsource/roboto": "^5.0.15",
     "@heroicons/vue": "^2.1.5",
+    "pinia": "^2.2.2",
     "vue": "^3.4.37"
   },
   "devDependencies": {

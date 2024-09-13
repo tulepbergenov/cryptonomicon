@@ -3,5 +3,8 @@ import App from "./App.vue";
 import "@/shared/styles/index.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/700.css";
+import { createPinia } from "pinia";
 
-createApp(App).mount("#app");
+const pinia = createPinia();
+
+createApp(App).use(pinia).mount("#app");
