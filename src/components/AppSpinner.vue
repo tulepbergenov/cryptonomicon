@@ -30,7 +30,7 @@ onMounted(() => {
 <style scoped>
 .app-spinner-enter-active,
 .app-spinner-leave-active {
-  transition: opacity 0.3s ease-in-out 0s;
+  @apply transition-opacity duration-300 ease-in-out;
 }
 
 .app-spinner-enter-from,

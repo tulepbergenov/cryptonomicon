@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import AddTickerForm from "./features/AddTickerForm.vue";
-import AppSpinner from "./features/AppSpinner.vue";
-import ErrorBoundary from "./features/ErrorBoundary.vue";
-import TickerChart from "./features/TickerChart.vue";
-import TickerList from "./features/TickerList.vue";
+import AddTickerForm from "./components/AddTickerForm.vue";
+import AppSpinner from "./components/AppSpinner.vue";
+import ErrorBoundary from "./components/ErrorBoundary.vue";
+import TickerChart from "./components/TickerChart.vue";
+import TickerList from "./components/TickerList.vue";
 import BaseDivider from "./shared/bases/BaseDivider.vue";
 import { useTickerStore } from "./shared/stores";
 
@@ -24,9 +24,11 @@ const tickerStore = useTickerStore();
           </div>
         </div>
       </section>
-      <div class="container" v-if="tickerStore.isEmptyTickers">
-        <BaseDivider />
-      </div>
+      <Transition name="divider-ticker-list">
+        <div class="container" v-if="tickerStore.isEmptyTickers">
+          <BaseDivider />
+        </div>
+      </Transition>
       <section>
         <div class="container">
           <div>
@@ -34,9 +36,11 @@ const tickerStore = useTickerStore();
           </div>
         </div>
       </section>
-      <div class="container" v-if="tickerStore.selectedTicker">
-        <BaseDivider />
-      </div>
+      <Transition name="divider-ticker-chart">
+        <div class="container" v-if="tickerStore.selectedTicker">
+          <BaseDivider />
+        </div>
+      </Transition>
       <section v-if="tickerStore.selectedTicker">
         <div class="container">
           <div>
@@ -47,3 +51,19 @@ const tickerStore = useTickerStore();
     </main>
   </ErrorBoundary>
 </template>
+
+<style scoped>
+.divider-ticker-list-enter-active,
+.divider-ticker-list-leave-active,
+.divider-ticker-chart-enter-active,
+.divider-ticker-chart-leave-active {
+  @apply transition-opacity duration-300 ease-in-out;
+}
+
+.divider-ticker-list-enter,
+.divider-ticker-list-leave-to,
+.divider-ticker-chart-enter,
+.divider-ticker-chart-leave-to {
+  @apply opacity-0;
+}
+</style>
