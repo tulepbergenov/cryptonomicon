@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import AddTickerForm from "./components/AddTickerForm.vue";
 import AppSpinner from "./components/AppSpinner.vue";
 import ErrorBoundary from "./components/ErrorBoundary.vue";
@@ -8,6 +9,8 @@ import BaseDivider from "./shared/bases/BaseDivider.vue";
 import { useTickerStore } from "./shared/stores";
 
 const tickerStore = useTickerStore();
+
+const isEmptyTickers = computed(() => tickerStore.tickers.length !== 0);
 </script>
 
 <template>
@@ -25,7 +28,7 @@ const tickerStore = useTickerStore();
         </div>
       </section>
       <Transition name="divider-ticker-list">
-        <div class="container" v-if="tickerStore.isEmptyTickers">
+        <div class="container" v-if="isEmptyTickers">
           <BaseDivider />
         </div>
       </Transition>

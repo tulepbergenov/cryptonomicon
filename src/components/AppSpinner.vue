@@ -1,17 +1,17 @@
 <script lang="ts" setup>
 import SpinnerIcon from "@/shared/icons/SpinnerIcon.vue";
-import { disableScroll } from "@/shared/libs";
 import { onMounted, ref } from "vue";
 
 const isLoading = ref(true);
+const body = document.body;
 
 onMounted(() => {
-  disableScroll(true);
+  body.style.overflow = "hidden";
 
   setTimeout(() => {
     isLoading.value = false;
 
-    disableScroll(false);
+    body.style.overflow = "visible";
   }, 1500);
 });
 </script>

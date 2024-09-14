@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
+import { ref } from "vue";
 import { TickerType } from "../types";
-import { computed, ref } from "vue";
 
 export const useTickerStore = defineStore("tickerStoreId", () => {
   const tickers = ref<TickerType[]>([]);
@@ -27,13 +27,10 @@ export const useTickerStore = defineStore("tickerStoreId", () => {
     selectedTicker.value = null;
   };
 
-  const isEmptyTickers = computed(() => tickers.value.length !== 0);
-
   return {
     tickers,
     addTicker,
     removeTicker,
-    isEmptyTickers,
     selectedTicker,
     setSelectedTicker,
     removeSelectedTicker,
