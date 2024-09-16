@@ -15,7 +15,7 @@ const validationSchema = toTypedSchema(
   })
 );
 
-const { defineField, handleSubmit, errors, resetForm, values } = useForm({
+const { defineField, handleSubmit, errors, resetForm } = useForm({
   validationSchema,
 });
 
