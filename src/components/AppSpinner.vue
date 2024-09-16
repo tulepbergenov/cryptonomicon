@@ -17,14 +17,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <Transition name="app-spinner">
+  <transition name="app-spinner">
     <div
       v-if="isLoading"
       class="fixed w-svw h-svh bg-purple-800/80 inset-0 z-50 flex items-center justify-center"
     >
-      <SpinnerIcon class="-ml-1 mr-3 h-12 w-12 text-white" />
+      <spinner-icon class="-ml-1 mr-3 h-12 w-12 text-white" />
     </div>
-  </Transition>
+  </transition>
 </template>
 
 <style scoped>

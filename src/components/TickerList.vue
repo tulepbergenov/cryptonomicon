@@ -6,17 +6,17 @@ const tickerStore = useTickerStore();
 </script>
 
 <template>
-  <TransitionGroup
+  <transition-group
     name="ticker-list"
     tag="div"
     class="mt-5 grid md:grid-cols-2 gap-5 lg:grid-cols-3"
   >
-    <TickerListItem
+    <ticker-list-item
       :ticker="ticker"
       :key="ticker.id"
       v-for="ticker in tickerStore.tickers"
     />
-  </TransitionGroup>
+  </transition-group>
 </template>
 
 <style scoped>

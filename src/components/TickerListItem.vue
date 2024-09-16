@@ -39,7 +39,7 @@ const isSelected = computed(
       @click.stop="tickerStore.removeTicker(props.ticker.id)"
       class="flex items-center text-sm justify-center gap-1 rounded-b-lg w-full bg-gray-100 py-4 px-6 text-md text-gray-500 [@media(hover:hover)]:hover:bg-gray-200 transition-colors ease-in-out duration-300"
     >
-      <TrashIcon class="size-4" />
+      <trash-icon class="size-4" />
       <span>Удалить</span>
     </button>
   </article>

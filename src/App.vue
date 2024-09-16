@@ -14,45 +14,45 @@ const isEmptyTickers = computed(() => tickerStore.tickers.length !== 0);
 </script>
 
 <template>
-  <ErrorBoundary>
+  <error-boundary>
     <main class="flex-auto mb-20">
       <h1 class="sr-only">
         Cryptonomicon tracks live currency and crypto rates 📈
       </h1>
-      <AppSpinner />
+      <app-spinner />
       <section class="mt-10">
         <div class="container">
           <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <AddTickerForm />
+            <add-ticker-form />
           </div>
         </div>
       </section>
-      <Transition name="divider-ticker-list">
+      <transition name="divider-ticker-list">
         <div class="container" v-if="isEmptyTickers">
-          <BaseDivider />
+          <base-divider />
         </div>
-      </Transition>
+      </transition>
       <section>
         <div class="container">
           <div>
-            <TickerList />
+            <ticker-list />
           </div>
         </div>
       </section>
-      <Transition name="divider-ticker-chart">
+      <transition name="divider-ticker-chart">
         <div class="container" v-if="tickerStore.selectedTicker">
-          <BaseDivider />
+          <base-divider />
         </div>
-      </Transition>
+      </transition>
       <section v-if="tickerStore.selectedTicker">
         <div class="container">
           <div>
-            <TickerChart />
+            <ticker-chart />
           </div>
         </div>
       </section>
     </main>
-  </ErrorBoundary>
+  </error-boundary>
 </template>
 
 <style scoped>

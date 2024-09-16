@@ -6,7 +6,7 @@ const tickerStore = useTickerStore();
 </script>
 
 <template>
-  <Transition name="ticker-chart">
+  <transition name="ticker-chart">
     <div>
       <div class="flex items-center justify-between">
         <span class="text-lg text-gray-900 font-bold uppercase">{{
@@ -19,7 +19,7 @@ const tickerStore = useTickerStore();
           title="Close chart"
           @click="tickerStore.removeSelectedTicker()"
         >
-          <XCircleIcon class="size-7" />
+          <x-circle-icon class="size-7" />
         </button>
       </div>
       <ul
@@ -31,7 +31,7 @@ const tickerStore = useTickerStore();
         <li class="bg-purple-800 border w-10 h-16"></li>
       </ul>
     </div>
-  </Transition>
+  </transition>
 </template>
 
 <style scoped>

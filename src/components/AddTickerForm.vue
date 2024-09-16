@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BaseButton from "@/shared/bases/BaseButton.vue";
 import { useTickerStore } from "@/shared/stores";
 import { PlusCircleIcon } from "@heroicons/vue/24/outline";
 import { computed, ref } from "vue";
@@ -47,13 +48,10 @@ const isTickerEmpty = computed(() => ticker.value.length === 0);
     <div class="text-sm text-red-600 my-3">
       <span>Такой тикер уже добавлен</span>
     </div>
-    <button
-      type="submit"
-      :disabled="isTickerEmpty"
-      class="mt-3 flex items-center gap-1 bg-gray-600 text-white text-sm rounded-full py-2 px-4 [@media(hover:hover)]:hover:opacity-80 transition-[opacity, background-color] ease-in-out duration-300 active:opacity-80 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:opacity-100 disabled:active:opacity-100"
-    >
-      <PlusCircleIcon class="size-6" />
-      <span>Добавить</span>
-    </button>
+    <base-button type="submit" :disabled="isTickerEmpty" label="Добавить">
+      <template #icon>
+        <plus-circle-icon class="size-6" />
+      </template>
+    </base-button>
   </form>
 </template>
