@@ -2,26 +2,40 @@
 import BaseButton from "@/shared/bases/BaseButton.vue";
 import { useTickerStore } from "@/shared/stores";
 import { PlusCircleIcon } from "@heroicons/vue/24/outline";
-import { computed, ref } from "vue";
+import { toTypedSchema } from "@vee-validate/zod";
+import { useForm } from "vee-validate";
+import { computed } from "vue";
+import * as zod from "zod";
 
 const tickerStore = useTickerStore();
 
-const ticker = ref("");
+const validationSchema = toTypedSchema(
+  zod.object({
+    ticker: zod.string({ message: "Тикер не может быть пустым" }),
+  })
+);
 
-const handleAddTickerSubmit = () => {
+const { defineField, handleSubmit, errors, resetForm, values } = useForm({
+  validationSchema,
+});
+
+const [ticker] = defineField("ticker");
+
+const onSubmit = handleSubmit((values) => {
   tickerStore.addTicker({
-    id: Math.random().toString(36).substr(2, 9),
-    name: ticker.value,
+    id: Math.random().toString(36),
+    name: values.ticker,
     price: 0,
   });
-  ticker.value = "";
-};
 
-const isTickerEmpty = computed(() => ticker.value.length === 0);
+  resetForm();
+});
+
+const isEmpty = computed(() => !ticker.value);
 </script>
 
 <template>
-  <form class="w-full" @submit.prevent="handleAddTickerSubmit">
+  <form class="w-full" @submit.prevent="onSubmit">
     <label for="wallet" class="block text-sm text-gray-700">Тикер</label>
     <div class="mt-1 relative rounded-md shadow-md">
       <input
@@ -45,10 +59,15 @@ const isTickerEmpty = computed(() => ticker.value.length === 0);
         </button>
       </li>
     </ul>
-    <div class="text-sm text-red-600 my-3">
-      <span>Такой тикер уже добавлен</span>
+    <div v-if="errors.ticker" class="text-sm text-red-600 mt-3">
+      <span>{{ errors.ticker }}</span>
     </div>
-    <base-button type="submit" :disabled="isTickerEmpty" label="Добавить">
+    <base-button
+      type="submit"
+      :disabled="isEmpty"
+      label="Добавить"
+      class="mt-3"
+    >
       <template #icon>
         <plus-circle-icon class="size-6" />
       </template>

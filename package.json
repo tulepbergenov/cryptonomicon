@@ -12,8 +12,11 @@
   "dependencies": {
     "@fontsource/roboto": "^5.0.15",
     "@heroicons/vue": "^2.1.5",
+    "@vee-validate/zod": "^4.13.2",
     "pinia": "^2.2.2",
-    "vue": "^3.4.37"
+    "vee-validate": "^4.13.2",
+    "vue": "^3.4.37",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.10.0",
