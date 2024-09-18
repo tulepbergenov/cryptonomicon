@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatPrice } from "@/shared/libs";
 import { useTickerStore } from "@/shared/stores";
 import { TickerType } from "@/shared/types";
 import { TrashIcon } from "@heroicons/vue/24/outline";
@@ -10,13 +11,13 @@ const props = defineProps<{
 
 const tickerStore = useTickerStore();
 
-const value = computed(() =>
-  props.ticker.price === 0 ? "-" : props.ticker.price
-);
-
 const isSelected = computed(
   () => tickerStore.selectedTicker?.id === props.ticker.id
 );
+
+const value = computed(() => {
+  return props.ticker.price === "-" ? "-" : formatPrice(props.ticker.price);
+});
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import BaseButton from "@/shared/bases/BaseButton.vue";
 import CoinSuggestions from "@/components/CoinSuggestions.vue";
+import BaseButton from "@/shared/bases/BaseButton.vue";
 import { useTickerStore } from "@/shared/stores";
 import { PlusCircleIcon } from "@heroicons/vue/24/outline";
 import { toTypedSchema } from "@vee-validate/zod";
@@ -23,10 +23,12 @@ const { defineField, handleSubmit, errors, resetForm } = useForm({
 const [ticker] = defineField("ticker");
 
 const onSubmit = handleSubmit((values) => {
+  const name = values.ticker.trim();
+
   tickerStore.addTicker({
-    id: Math.random().toString(36),
-    name: values.ticker,
-    price: 0,
+    id: name,
+    name,
+    price: "-",
   });
 
   resetForm();

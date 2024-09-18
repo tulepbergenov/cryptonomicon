@@ -1,8 +1,20 @@
 <script setup lang="ts">
 import { useTickerStore } from "@/shared/stores";
 import { XCircleIcon } from "@heroicons/vue/24/outline";
+import { computed } from "vue";
 
 const tickerStore = useTickerStore();
+
+const normalizedChart = computed(() => {
+  const maxValue = Math.max(...tickerStore.chart);
+  const minValue = Math.min(...tickerStore.chart);
+
+  return tickerStore.chart.map(
+    (price) => 5 + (price - minValue * 95) / (maxValue - minValue)
+  );
+});
+
+console.log(normalizedChart.value);
 </script>
 
 <template>
@@ -25,10 +37,14 @@ const tickerStore = useTickerStore();
       <ul
         class="flex items-end border-gray-400 border-b border-l h-64 mt-6 p-2"
       >
-        <li class="bg-purple-800 border w-10 h-24"></li>
-        <li class="bg-purple-800 border w-10 h-32"></li>
-        <li class="bg-purple-800 border w-10 h-48"></li>
-        <li class="bg-purple-800 border w-10 h-16"></li>
+        <li
+          v-for="bar in normalizedChart"
+          :key="bar"
+          class="bg-purple-800 border w-10"
+          :style="{
+            height: `${bar}%`,
+          }"
+        />
       </ul>
     </div>
   </transition>
