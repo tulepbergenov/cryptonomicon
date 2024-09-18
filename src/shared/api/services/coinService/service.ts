@@ -1,10 +1,8 @@
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { api } from "../../axios";
 import { GetCoinListResponse, GetCoinPriceResponse } from "./types";
 
-const getCoinList = (): Promise<
-  AxiosResponse<GetCoinListResponse, AxiosError>
-> =>
+const getCoinList = (): Promise<AxiosResponse<GetCoinListResponse>> =>
   api.get("data/all/coinlist", {
     params: {
       summary: true,
@@ -13,8 +11,8 @@ const getCoinList = (): Promise<
 
 const getCoinPrice = (
   coin: string
-): Promise<AxiosResponse<GetCoinPriceResponse, AxiosError>> =>
-  api.get(`data/price`, {
+): Promise<AxiosResponse<GetCoinPriceResponse>> =>
+  api.get("data/price", {
     params: {
       fsym: coin,
       tsyms: "USD",
