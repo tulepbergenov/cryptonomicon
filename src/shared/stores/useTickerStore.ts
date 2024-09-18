@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { TickerType } from "../types";
-import { coinService } from "../api";
+import { coinService, GetCoinListItemResponse } from "../api";
 
 export const useTickerStore = defineStore("tickerStoreId", () => {
   const tickers = ref<TickerType[]>([]);
   const chart = ref<number[]>([]);
+  const coins = ref<GetCoinListItemResponse[]>([]);
 
   const selectedTicker = ref<TickerType | null>(null);
 
@@ -56,7 +57,12 @@ export const useTickerStore = defineStore("tickerStoreId", () => {
     selectedTicker.value = null;
   };
 
+  const setCoins = (inputCoins: GetCoinListItemResponse[]) => {
+    coins.value = inputCoins;
+  };
+
   return {
+    coins,
     tickers,
     addTicker,
     removeTicker,
@@ -65,5 +71,6 @@ export const useTickerStore = defineStore("tickerStoreId", () => {
     removeSelectedTicker,
     updateTickerPrice,
     chart,
+    setCoins,
   };
 });

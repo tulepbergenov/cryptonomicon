@@ -7,6 +7,7 @@ import TickerChart from "./components/TickerChart.vue";
 import TickerList from "./components/TickerList.vue";
 import BaseDivider from "./shared/bases/BaseDivider.vue";
 import { useTickerStore } from "./shared/stores";
+import { Toaster } from "vue-sonner";
 
 const tickerStore = useTickerStore();
 
@@ -52,6 +53,7 @@ const isEmptyTickers = computed(() => tickerStore.tickers.length !== 0);
         </div>
       </section>
     </main>
+    <toaster rich-colors position="top-right" />
   </error-boundary>
 </template>
 

@@ -1,6 +1,13 @@
 <script lang="ts" setup>
+import { coinService } from "@/shared/api";
 import SpinnerIcon from "@/shared/icons/SpinnerIcon.vue";
+import { objectToArray } from "@/shared/libs";
+import { useTickerStore } from "@/shared/stores";
+import axios from "axios";
 import { onMounted, ref } from "vue";
+import { toast } from "vue-sonner";
+
+const tickerStore = useTickerStore();
 
 const isLoading = ref(true);
 const body = document.body;
@@ -8,11 +15,35 @@ const body = document.body;
 onMounted(() => {
   body.style.overflow = "hidden";
 
-  setTimeout(() => {
-    isLoading.value = false;
+  coinService
+    .getCoinList()
+    .then((response) => {
+      if (response.data.Response === "Error") {
+        toast.error(response.data.Message);
+        return;
+      }
 
-    body.style.overflow = "visible";
-  }, 1500);
+      if (response.data.Response === "Success") {
+        const coins = objectToArray(response.data.Data);
+
+        tickerStore.setCoins(coins);
+
+        return;
+      }
+
+      throw new Error("Something went wrong");
+    })
+    .catch((error) => {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.message);
+      } else {
+        toast.error(`${error}`);
+      }
+    })
+    .finally(() => {
+      isLoading.value = false;
+      body.style.overflow = "visible";
+    });
 });
 </script>
 
