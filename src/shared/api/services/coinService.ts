@@ -1,8 +1,14 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
+import { api } from "../axios";
 
 export const getCoinList = (): Promise<
   AxiosResponse<GetCoinListResponse, AxiosError>
-> => axios.get(import.meta.env.VITE_COINLIST_API_DOMAIN);
+> =>
+  api.get("data/all/coinlist", {
+    params: {
+      summary: true,
+    },
+  });
 
 export type GetCoinListResponse = {
   Response: "Success" | "Error";
