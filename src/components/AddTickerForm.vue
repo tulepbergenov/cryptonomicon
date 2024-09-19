@@ -12,7 +12,7 @@ const tickerStore = useTickerStore();
 
 const validationSchema = toTypedSchema(
   zod.object({
-    ticker: zod.string({ message: "Тикер не может быть пустым" }),
+    ticker: zod.string({ message: "Ticker cannot be empty" }),
   })
 );
 
@@ -25,11 +25,7 @@ const [ticker] = defineField("ticker");
 const onSubmit = handleSubmit((values) => {
   const name = values.ticker.trim();
 
-  tickerStore.addTicker({
-    id: name,
-    name,
-    price: "-",
-  });
+  tickerStore.addTicker(name);
 
   resetForm();
 });
@@ -39,7 +35,7 @@ const isEmpty = computed(() => !ticker.value);
 
 <template>
   <form class="w-full" @submit.prevent="onSubmit">
-    <label for="wallet" class="block text-sm text-gray-700">Тикер</label>
+    <label for="wallet" class="block text-sm text-gray-700">Ticker</label>
     <div class="mt-1 relative rounded-md shadow-md">
       <input
         v-model="ticker"
@@ -47,19 +43,14 @@ const isEmpty = computed(() => !ticker.value);
         name="wallet"
         id="wallet"
         class="block w-full pr-10 border-gray-300 text-gray-900 rounded-md"
-        placeholder="Например DOGE"
+        placeholder="Enter a ticker, e.g. BTC"
       />
     </div>
     <coin-suggestions />
     <div v-if="errors.ticker" class="text-sm text-red-600 mt-3">
       <span>{{ errors.ticker }}</span>
     </div>
-    <base-button
-      type="submit"
-      :disabled="isEmpty"
-      label="Добавить"
-      class="mt-3"
-    >
+    <base-button type="submit" :disabled="isEmpty" label="Add" class="mt-3">
       <template #icon>
         <plus-circle-icon class="size-6" />
       </template>

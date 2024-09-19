@@ -1,9 +1,11 @@
-export type GetCoinListResponse = {
+export type GetCoinListResponse = ApiResponse<{
+  [key: string]: GetCoinListItemResponse;
+}>;
+
+export type ApiResponse<T> = {
   Response: "Success" | "Error";
   Message: string;
-  Data: {
-    [key: string]: GetCoinListItemResponse;
-  };
+  Data: T;
   RateLimit: Record<string, unknown>;
   HasWarning: boolean;
   Type: number;

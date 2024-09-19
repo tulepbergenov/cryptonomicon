@@ -1,23 +1,43 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { TickerType } from "../types";
-import { coinService, GetCoinListItemResponse } from "../api";
+import { coinService } from "../api";
+import { CoinType, TickerType } from "../types";
+import { toast } from "vue-sonner";
 
 export const useTickerStore = defineStore("tickerStoreId", () => {
   const tickers = ref<TickerType[]>([]);
   const chart = ref<number[]>([]);
-  const coins = ref<GetCoinListItemResponse[]>([]);
+  const coins = ref<CoinType[]>([]);
 
   const selectedTicker = ref<TickerType | null>(null);
 
-  const addTicker = (ticker: Omit<TickerType, "intervalId">) => {
+  const addTicker = (name: string) => {
     const intervalId = setInterval(() => {
-      coinService.getCoinPrice(ticker.name).then((res) => {
-        updateTickerPrice(ticker.name, res.data.USD);
+      coinService.getCoinPrice(name).then((response) => {
+        if ("Response" in response.data && response.data.Response === "Error") {
+          toast.error(response.data.Message as string);
+
+          removeTicker(name);
+          return;
+        }
+
+        if ("USD" in response.data) {
+          updateTickerPrice(name, response.data.USD);
+          return;
+        }
+
+        toast.error("Invalid response");
+
+        removeTicker(name);
       });
     }, 3000);
 
-    tickers.value.push({ ...ticker, intervalId });
+    tickers.value.push({
+      id: name,
+      name,
+      price: "-",
+      intervalId,
+    });
   };
 
   const removeTicker = (tickerId: string) => {
@@ -57,7 +77,7 @@ export const useTickerStore = defineStore("tickerStoreId", () => {
     selectedTicker.value = null;
   };
 
-  const setCoins = (inputCoins: GetCoinListItemResponse[]) => {
+  const setCoins = (inputCoins: CoinType[]) => {
     coins.value = inputCoins;
   };
 
