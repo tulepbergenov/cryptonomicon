@@ -5,10 +5,12 @@ import { useTickerStore } from "@/shared/stores";
 import { PlusCircleIcon } from "@heroicons/vue/24/outline";
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import * as zod from "zod";
 
 const tickerStore = useTickerStore();
+
+const isExistsSameTicker = ref(false);
 
 const validationSchema = toTypedSchema(
   zod.object({
@@ -25,9 +27,18 @@ const [ticker] = defineField("ticker");
 const onSubmit = handleSubmit((values) => {
   const name = values.ticker.trim();
 
+  if (tickerStore.tickers.some((ticker) => ticker.name === name)) {
+    isExistsSameTicker.value = true;
+    return;
+  }
+
   tickerStore.addTicker(name);
 
   resetForm();
+});
+
+watch(ticker, () => {
+  isExistsSameTicker.value = false;
 });
 
 const isEmpty = computed(() => !ticker.value);
@@ -46,9 +57,13 @@ const isEmpty = computed(() => !ticker.value);
         placeholder="Enter a ticker, e.g. BTC"
       />
     </div>
-    <coin-suggestions />
-    <div v-if="errors.ticker" class="text-sm text-red-600 mt-3">
+    <coin-suggestions :ticker="ticker || ''" :reset-form="resetForm" />
+    <div
+      v-if="errors.ticker || isExistsSameTicker"
+      class="text-sm text-red-600 mt-3"
+    >
       <span>{{ errors.ticker }}</span>
+      <span v-if="isExistsSameTicker">Ticker already exists</span>
     </div>
     <base-button type="submit" :disabled="isEmpty" label="Add" class="mt-3">
       <template #icon>

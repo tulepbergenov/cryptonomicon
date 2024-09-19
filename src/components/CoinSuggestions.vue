@@ -2,18 +2,35 @@
 import { useTickerStore } from "@/shared/stores";
 import { computed } from "vue";
 
+const { ticker = "", resetForm } = defineProps<{
+  ticker: string;
+  resetForm: () => void;
+}>();
+
 const tickerStore = useTickerStore();
 
-const coins = computed(() => tickerStore.coins.slice(-4));
+const coins = computed(() => {
+  if (ticker) {
+    return tickerStore.coins
+      .filter((coin) => coin.keyName.includes(ticker!.toUpperCase()))
+      .slice(-4);
+  }
+
+  return tickerStore.coins.slice(-4);
+});
 
 const handleAddTicker = (name: string) => {
   tickerStore.addTicker(name);
+
+  if (ticker.length) {
+    resetForm();
+  }
 };
 </script>
 
 <template>
   <transition name="coins">
-    <transition-group
+    <ul
       v-if="coins.length"
       name="coins-list"
       tag="ul"
@@ -28,7 +45,7 @@ const handleAddTicker = (name: string) => {
           {{ coin.keyName }}
         </button>
       </li>
-    </transition-group>
+    </ul>
   </transition>
 </template>
 
@@ -40,18 +57,6 @@ const handleAddTicker = (name: string) => {
 
 .coins-enter-from,
 .coins-leave-to {
-  @apply opacity-0;
-}
-</style>
-
-<style scoped>
-.coins-list-enter-active,
-.coins-list-leave-active {
-  @apply transition-opacity duration-300 ease-in-out;
-}
-
-.coins-list-enter-from,
-.coins-list-leave-to {
   @apply opacity-0;
 }
 </style>
