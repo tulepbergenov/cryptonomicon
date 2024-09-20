@@ -2,9 +2,9 @@
 import { useTickerStore } from "@/shared/stores";
 import { computed } from "vue";
 
-const { ticker = "", resetForm } = defineProps<{
+const { ticker = "", addTicker } = defineProps<{
   ticker: string;
-  resetForm: () => void;
+  addTicker: (name: string) => void;
 }>();
 
 const tickerStore = useTickerStore();
@@ -18,14 +18,6 @@ const coins = computed(() => {
 
   return tickerStore.coins.slice(-4);
 });
-
-const handleAddTicker = (name: string) => {
-  tickerStore.addTicker(name);
-
-  if (ticker.length) {
-    resetForm();
-  }
-};
 </script>
 
 <template>
@@ -38,7 +30,7 @@ const handleAddTicker = (name: string) => {
     >
       <li v-for="coin in coins" :key="coin.Id" class="flex">
         <button
-          @click="handleAddTicker(coin.keyName)"
+          @click="addTicker(coin.keyName)"
           type="button"
           class="inline-block items-center px-2 rounded-md text-xs bg-gray-300 text-gray-800 cursor-pointer [@media(hover:hover)]:hover:opacity-60 transition-opacity ease-in-out duration-300 active:opacity-60"
         >

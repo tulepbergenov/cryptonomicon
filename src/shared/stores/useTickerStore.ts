@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { coinService } from "../api";
 import { CoinType, TickerType } from "../types";
 import { toast } from "vue-sonner";
+import { tickerStorageService } from "../libs";
 
 export const useTickerStore = defineStore("tickerStoreId", () => {
   const tickers = ref<TickerType[]>([]);
@@ -38,6 +39,8 @@ export const useTickerStore = defineStore("tickerStoreId", () => {
       price: "-",
       intervalId,
     });
+
+    tickerStorageService.addTicker(name);
   };
 
   const removeTicker = (tickerId: string) => {
@@ -53,6 +56,8 @@ export const useTickerStore = defineStore("tickerStoreId", () => {
       selectedTicker.value = null;
       chart.value = [];
     }
+
+    tickerStorageService.removeTicker(tickerId);
   };
 
   const updateTickerPrice = (tickerId: string, price: number) => {

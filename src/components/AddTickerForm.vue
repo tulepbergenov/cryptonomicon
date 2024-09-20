@@ -24,9 +24,7 @@ const { defineField, handleSubmit, errors, resetForm } = useForm({
 
 const [ticker] = defineField("ticker");
 
-const onSubmit = handleSubmit((values) => {
-  const name = values.ticker.trim();
-
+const handleAddTicker = (name: string) => {
   if (tickerStore.tickers.some((ticker) => ticker.name === name)) {
     isExistsSameTicker.value = true;
     return;
@@ -35,6 +33,10 @@ const onSubmit = handleSubmit((values) => {
   tickerStore.addTicker(name);
 
   resetForm();
+};
+
+const onSubmit = handleSubmit((values) => {
+  handleAddTicker(values.ticker.trim().toUpperCase());
 });
 
 watch(ticker, () => {
@@ -57,7 +59,7 @@ const isEmpty = computed(() => !ticker.value);
         placeholder="Enter a ticker, e.g. BTC"
       />
     </div>
-    <coin-suggestions :ticker="ticker || ''" :reset-form="resetForm" />
+    <coin-suggestions :ticker="ticker || ''" :add-ticker="handleAddTicker" />
     <div
       v-if="errors.ticker || isExistsSameTicker"
       class="text-sm text-red-600 mt-3"
