@@ -1,8 +1,20 @@
 <script setup lang="ts">
 import { useTickerStore } from "@/shared/stores";
 import TickerListItem from "./TickerListItem.vue";
+import { onMounted } from "vue";
+import { tickerStorageService } from "@/shared/libs";
 
 const tickerStore = useTickerStore();
+
+onMounted(() => {
+  const tickersFromLocalStorage = tickerStorageService.getTickers();
+
+  if (tickersFromLocalStorage.length) {
+    for (const ticker of tickersFromLocalStorage) {
+      tickerStore.addTicker(ticker);
+    }
+  }
+});
 </script>
 
 <template>
