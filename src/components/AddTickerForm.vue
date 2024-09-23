@@ -43,7 +43,7 @@ watch(ticker, () => {
   isExistsSameTicker.value = false;
 });
 
-const isEmpty = computed(() => !ticker.value);
+const isEmpty = computed(() => !ticker.value?.trim());
 </script>
 
 <template>
