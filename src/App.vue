@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import AddTickerForm from "./components/AddTickerForm.vue";
-import AppSpinner from "./components/AppSpinner.vue";
-import ErrorBoundary from "./components/ErrorBoundary.vue";
-import TickerChart from "./components/TickerChart.vue";
-import TickerList from "./components/TickerList.vue";
-import BaseDivider from "./shared/bases/BaseDivider.vue";
-import { useTickerStore } from "./shared/stores";
+import AddTickerForm from "@/components/AddTickerForm.vue";
+import AppSpinner from "@/components/AppSpinner.vue";
+import ErrorBoundary from "@/components/ErrorBoundary.vue";
+import TickerChart from "@/components/TickerChart.vue";
+import TickerList from "@/components/TickerList.vue";
+import BaseDivider from "@/shared/bases/BaseDivider.vue";
+import { useTickerStore } from "@/shared/stores";
 import { Toaster } from "vue-sonner";
 
 const tickerStore = useTickerStore();

@@ -13,31 +13,31 @@ export const useTickerStore = defineStore("tickerStoreId", () => {
   const selectedTicker = ref<TickerType | null>(null);
 
   const addTicker = (name: string) => {
-    const intervalId = setInterval(() => {
-      coinService.getCoinPrice(name).then((response) => {
-        if ("Response" in response.data && response.data.Response === "Error") {
-          toast.error(response.data.Message as string);
-
-          removeTicker(name);
-          return;
-        }
-
-        if ("USD" in response.data) {
-          updateTickerPrice(name, response.data.USD);
-          return;
-        }
-
-        toast.error("Invalid response");
-
-        removeTicker(name);
-      });
-    }, 3000);
+    //     const intervalId = setInterval(() => {
+    //       coinService.getCoinPrice(name).then((response) => {
+    //         if ("Response" in response.data && response.data.Response === "Error") {
+    //           toast.error(response.data.Message as string);
+    //
+    //           removeTicker(name);
+    //           return;
+    //         }
+    //
+    //         if ("USD" in response.data) {
+    //           updateTickerPrice(name, response.data.USD);
+    //           return;
+    //         }
+    //
+    //         toast.error("Invalid response");
+    //
+    //         removeTicker(name);
+    //       });
+    //     }, 3000);
 
     tickers.value.push({
       id: name,
       name,
       price: "-",
-      intervalId,
+      intervalId: 0,
     });
 
     tickerStorageService.addTicker(name);
