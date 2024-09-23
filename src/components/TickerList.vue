@@ -5,6 +5,19 @@ import { tickerStorageService } from "@/shared/libs";
 import { useTickerStore } from "@/shared/stores";
 import { computed, onMounted, ref, watch } from "vue";
 import TickerListItem from "./TickerListItem.vue";
+import { z } from "zod";
+import { toast } from "vue-sonner";
+
+const querySchema = z.object({
+  page: z
+    .string()
+    .optional()
+    .transform((val) => (val ? parseInt(val) : 1))
+    .refine((val) => val > 0, {
+      message: "Page number must be greater than 0",
+    }),
+  searchTicker: z.string().optional(),
+});
 
 const TICKERS_PER_PAGE = 6;
 
@@ -57,9 +70,9 @@ watch(searchFilter, (newFilter) => {
   const url = new URL(window.location.href);
 
   if (newFilter) {
-    url.searchParams.set("sq", newFilter);
+    url.searchParams.set("searchTicker", newFilter);
   } else {
-    url.searchParams.delete("sq");
+    url.searchParams.delete("searchTicker");
   }
 
   window.history.replaceState(null, "", url.toString());
@@ -79,15 +92,21 @@ watch(currentPage, (newPage) => {
 
 onMounted(() => {
   const url = new URL(window.location.href);
-  const page = url.searchParams.get("page");
-  const searchQuery = url.searchParams.get("sq");
+  const queryParams = {
+    page: url.searchParams.get("page") ?? "1",
+    searchTicker: url.searchParams.get("searchTicker") ?? "",
+  };
 
-  if (page) {
-    currentPage.value = parseInt(page);
-  }
+  const result = querySchema.safeParse(queryParams);
 
-  if (searchQuery) {
-    searchFilter.value = searchQuery;
+  if (result.success) {
+    const { page, searchTicker } = result.data;
+
+    currentPage.value = page;
+    searchFilter.value = searchTicker || "";
+  } else {
+    toast.error(result.error.errors.map((e) => e.message).join(", "));
+    console.error(result.error);
   }
 });
 </script>
