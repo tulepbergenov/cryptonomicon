@@ -1,15 +1,3 @@
-<script setup lang="ts">
-const {
-  label,
-  iconPosition = "left",
-  disabled = false,
-} = defineProps<{
-  label: string;
-  iconPosition?: "left" | "right";
-  disabled?: boolean;
-}>();
-</script>
-
 <template>
   <button
     :disabled="disabled"
@@ -20,3 +8,17 @@ const {
     <slot name="icon" v-if="iconPosition === 'right'" />
   </button>
 </template>
+
+<script setup lang="ts">
+type PropsType = {
+  label: string;
+  iconPosition?: "left" | "right";
+  disabled?: boolean;
+};
+
+const {
+  label,
+  iconPosition = "left",
+  disabled = false,
+} = defineProps<PropsType>();
+</script>

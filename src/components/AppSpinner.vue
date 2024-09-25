@@ -1,3 +1,12 @@
+<template>
+  <div
+    v-if="isLoading"
+    class="fixed w-svw h-svh bg-purple-800/80 inset-0 z-50 flex items-center justify-center"
+  >
+    <SpinnerIcon class="-ml-1 mr-3 h-12 w-12 text-white" />
+  </div>
+</template>
+
 <script lang="ts" setup>
 import { coinService } from "@/shared/api";
 import SpinnerIcon from "@/shared/icons/SpinnerIcon.vue";
@@ -10,6 +19,7 @@ import { toast } from "vue-sonner";
 const tickerStore = useTickerStore();
 
 const isLoading = ref(true);
+
 const body = document.body;
 
 onMounted(() => {
@@ -46,26 +56,3 @@ onMounted(() => {
     });
 });
 </script>
-
-<template>
-  <transition name="app-spinner">
-    <div
-      v-if="isLoading"
-      class="fixed w-svw h-svh bg-purple-800/80 inset-0 z-50 flex items-center justify-center"
-    >
-      <spinner-icon class="-ml-1 mr-3 h-12 w-12 text-white" />
-    </div>
-  </transition>
-</template>
-
-<style scoped>
-.app-spinner-enter-active,
-.app-spinner-leave-active {
-  @apply transition-opacity duration-300 ease-in-out;
-}
-
-.app-spinner-enter-from,
-.app-spinner-leave-to {
-  opacity: 0;
-}
-</style>

@@ -1,12 +1,31 @@
+<template>
+  <div class="flex items-center gap-6 flex-wrap">
+    <TickerListSearch v-model:search-filter="searchFilter" />
+    <TickerListPagination
+      v-model:current-page="currentPage"
+      :total-pages="totalPages"
+    />
+  </div>
+  <ul
+    name="ticker-list"
+    tag="div"
+    class="mt-5 grid md:grid-cols-2 gap-5 lg:grid-cols-3"
+  >
+    <li :key="ticker.id" v-for="ticker in paginatedTickers">
+      <TickerListItem :ticker="ticker" />
+    </li>
+  </ul>
+</template>
+
 <script setup lang="ts">
 import TickerListPagination from "@/components/TickerListPagination.vue";
 import TickerListSearch from "@/components/TickerListSearch.vue";
 import { tickerStorageService } from "@/shared/libs";
 import { useTickerStore } from "@/shared/stores";
 import { computed, onMounted, ref, watch } from "vue";
-import TickerListItem from "./TickerListItem.vue";
-import { z } from "zod";
 import { toast } from "vue-sonner";
+import { z } from "zod";
+import TickerListItem from "./TickerListItem.vue";
 
 const querySchema = z.object({
   page: z
@@ -106,26 +125,8 @@ onMounted(() => {
     searchFilter.value = searchTicker || "";
   } else {
     toast.error(result.error.errors.map((e) => e.message).join(", "));
+
     console.error(result.error);
   }
 });
 </script>
-
-<template>
-  <div class="flex items-center gap-6 flex-wrap">
-    <ticker-list-search v-model:search-filter="searchFilter" />
-    <ticker-list-pagination
-      v-model:current-page="currentPage"
-      :total-pages="totalPages"
-    />
-  </div>
-  <ul
-    name="ticker-list"
-    tag="div"
-    class="mt-5 grid md:grid-cols-2 gap-5 lg:grid-cols-3"
-  >
-    <li :key="ticker.id" v-for="ticker in paginatedTickers">
-      <ticker-list-item :ticker="ticker" />
-    </li>
-  </ul>
-</template>

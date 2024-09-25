@@ -1,26 +1,3 @@
-<script setup lang="ts">
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/vue/24/outline";
-
-const props = defineProps<{
-  currentPage: number;
-  totalPages: number;
-}>();
-
-const emit = defineEmits(["update:currentPage"]);
-
-const handlePrevPage = () => {
-  if (props.currentPage === 1) return;
-
-  emit("update:currentPage", props.currentPage - 1);
-};
-
-const handleNextPage = () => {
-  if (props.currentPage === props.totalPages) return;
-
-  emit("update:currentPage", props.currentPage + 1);
-};
-</script>
-
 <template>
   <ul class="flex items-center flex-wrap gap-2">
     <li class="flex">
@@ -51,3 +28,28 @@ const handleNextPage = () => {
     </li>
   </ul>
 </template>
+
+<script setup lang="ts">
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/vue/24/outline";
+
+type PropsType = {
+  currentPage: number;
+  totalPages: number;
+};
+
+const props = defineProps<PropsType>();
+
+const emit = defineEmits(["update:currentPage"]);
+
+const handlePrevPage = () => {
+  if (props.currentPage === 1) return;
+
+  emit("update:currentPage", props.currentPage - 1);
+};
+
+const handleNextPage = () => {
+  if (props.currentPage === props.totalPages) return;
+
+  emit("update:currentPage", props.currentPage + 1);
+};
+</script>

@@ -11,9 +11,11 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-const props = defineProps<{
+type PropsType = {
   searchFilter: string;
-}>();
+};
+
+const props = defineProps<PropsType>();
 
 const emit = defineEmits(["update:searchFilter"]);
 

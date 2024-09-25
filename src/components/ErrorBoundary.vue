@@ -1,16 +1,3 @@
-<script setup lang="ts">
-import { onErrorCaptured, ref } from "vue";
-
-const error = ref<Error | null>(null);
-const errorMessage = ref<string | null>(null);
-
-onErrorCaptured((err) => {
-  error.value = err;
-  errorMessage.value = err.message;
-  return false;
-});
-</script>
-
 <template>
   <main v-if="error">
     <section class="flex flex-col items-center py-20">
@@ -26,3 +13,16 @@ onErrorCaptured((err) => {
   </main>
   <slot v-else />
 </template>
+
+<script setup lang="ts">
+import { onErrorCaptured, ref } from "vue";
+
+const error = ref<Error | null>(null);
+const errorMessage = ref<string | null>(null);
+
+onErrorCaptured((err) => {
+  error.value = err;
+  errorMessage.value = err.message;
+  return false;
+});
+</script>
