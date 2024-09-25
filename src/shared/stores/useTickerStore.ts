@@ -13,11 +13,14 @@ export const useTickerStore = defineStore("tickerStoreId", () => {
   const selectedTicker = ref<TickerType | null>(null);
 
   const addTicker = (name: string) => {
+    if (tickers.value.find((ticker) => ticker.name === name)) {
+      return;
+    }
+
     const intervalId = setInterval(() => {
       coinService.getCoinPrice(name).then((response) => {
         if ("Response" in response.data && response.data.Response === "Error") {
           toast.error(response.data.Message as string);
-
           removeTicker(name);
           return;
         }
@@ -28,7 +31,6 @@ export const useTickerStore = defineStore("tickerStoreId", () => {
         }
 
         toast.error("Invalid response");
-
         removeTicker(name);
       });
     }, 3000);

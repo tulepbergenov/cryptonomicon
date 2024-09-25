@@ -12,7 +12,7 @@
           </div>
         </div>
       </section>
-      <section v-if="isEmptyTickerList">
+      <section v-if="isNotEmptyTickerList">
         <div class="container">
           <BaseDivider />
           <div>
@@ -46,7 +46,7 @@ import { computed } from "vue";
 
 const tickerStore = useTickerStore();
 
-const isEmptyTickerList = computed(() => tickerStore.tickers.length !== 0);
+const isNotEmptyTickerList = computed(() => tickerStore.tickers.length !== 0);
 
 const isSelectedTicker = computed(() => tickerStore.selectedTicker);
 </script>
