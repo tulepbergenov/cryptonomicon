@@ -1,13 +1,3 @@
-<script setup lang="ts">
-import AddTickerForm from "@/components/AddTickerForm.vue";
-import AppSpinner from "@/components/AppSpinner.vue";
-import ErrorBoundary from "@/components/ErrorBoundary.vue";
-import TickerChart from "@/components/TickerChart.vue";
-import TickerList from "@/components/TickerList.vue";
-import BaseDivider from "@/shared/bases/BaseDivider.vue";
-import { Toaster } from "vue-sonner";
-</script>
-
 <template>
   <ErrorBoundary>
     <main class="flex-auto mb-20">
@@ -22,21 +12,17 @@ import { Toaster } from "vue-sonner";
           </div>
         </div>
       </section>
-      <div class="container">
-        <BaseDivider />
-      </div>
-      <section>
+      <section v-if="isEmptyTickerList">
         <div class="container">
+          <BaseDivider />
           <div>
             <TickerList />
           </div>
         </div>
       </section>
-      <div class="container">
-        <BaseDivider />
-      </div>
-      <section>
+      <section v-if="isSelectedTicker">
         <div class="container">
+          <BaseDivider />
           <div>
             <TickerChart />
           </div>
@@ -46,3 +32,21 @@ import { Toaster } from "vue-sonner";
     <Toaster rich-colors position="top-right" />
   </ErrorBoundary>
 </template>
+
+<script setup lang="ts">
+import AddTickerForm from "@/components/AddTickerForm.vue";
+import AppSpinner from "@/components/AppSpinner.vue";
+import ErrorBoundary from "@/components/ErrorBoundary.vue";
+import TickerChart from "@/components/TickerChart.vue";
+import TickerList from "@/components/TickerList.vue";
+import BaseDivider from "@/shared/bases/BaseDivider.vue";
+import { Toaster } from "vue-sonner";
+import { useTickerStore } from "./shared/stores";
+import { computed } from "vue";
+
+const tickerStore = useTickerStore();
+
+const isEmptyTickerList = computed(() => tickerStore.tickers.length !== 0);
+
+const isSelectedTicker = computed(() => tickerStore.selectedTicker);
+</script>
