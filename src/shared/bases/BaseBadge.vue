@@ -8,8 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from "vue";
-
 type PropsType = {
   type?: "button" | "submit" | "reset";
 };
