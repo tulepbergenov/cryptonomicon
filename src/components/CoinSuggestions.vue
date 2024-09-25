@@ -6,18 +6,15 @@
     class="flex bg-white shadow-md p-2 rounded-md flex-wrap items-center gap-1"
   >
     <li v-for="coin in coins" :key="coin.Id" class="flex">
-      <button
-        @click="addTicker(coin.keyName)"
-        type="button"
-        class="inline-block items-center px-2 rounded-md text-xs bg-gray-300 text-gray-800 cursor-pointer [@media(hover:hover)]:hover:opacity-60 transition-opacity ease-in-out duration-300 active:opacity-60"
-      >
+      <BaseBadge type="button" @click="addTicker(coin.keyName)">
         {{ coin.keyName }}
-      </button>
+      </BaseBadge>
     </li>
   </ul>
 </template>
 
 <script setup lang="ts">
+import BaseBadge from "@/shared/bases/BaseBadge.vue";
 import { useTickerStore } from "@/shared/stores";
 import { computed } from "vue";
 
