@@ -30,6 +30,7 @@
       </section>
     </main>
     <Toaster rich-colors position="top-right" />
+    <VueQueryDevtools />
   </ErrorBoundary>
 </template>
 
@@ -43,6 +44,7 @@ import BaseDivider from "@/shared/bases/BaseDivider.vue";
 import { Toaster } from "vue-sonner";
 import { useTickerStore } from "./shared/stores";
 import { computed } from "vue";
+import { VueQueryDevtools } from "@tanstack/vue-query-devtools";
 
 const tickerStore = useTickerStore();
 
